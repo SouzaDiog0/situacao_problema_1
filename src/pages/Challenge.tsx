@@ -7,7 +7,8 @@ import BlockEditor from "@/components/BlockEditor";
 import Canvas from "@/components/Canvas";
 import InstructionsPanel from "@/components/InstructionsPanel";
 import { useToast } from "@/hooks/use-toast";
-import { challenges, BlockType } from "@/data/challenges";
+import { challenges, BlockType, PILLAR_LABELS, PILLAR_COLORS, PILLAR_EMOJI } from "@/data/challenges";
+import type { ProgressState } from "@/hooks/useProgress";
 import { useProgress } from "@/hooks/useProgress";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useProfile } from "@/hooks/useProfile";
@@ -99,18 +100,26 @@ const Challenge = () => {
       setIsRunning(false);
       setShowVictory(true);
 
-      // Notify newly unlocked badges (compare after a tick so state updates propagate)
-      setTimeout(() => {
-        const badgesAfter = computeBadges(progress);
-        badgesAfter.forEach((badge, i) => {
-          if (badge.unlocked && !badgesBefore[i].unlocked) {
+      // Simulate the updated progress to detect newly unlocked badges without relying on stale state
+      const updatedProgress: ProgressState = {
+        ...progress,
+        [challengeId]: {
+          completed: true,
+          stars: Math.max(progress[challengeId]?.stars ?? 0, stars),
+          bestBlockCount: Math.min(progress[challengeId]?.bestBlockCount ?? Infinity, blockCount),
+        },
+      };
+      const badgesAfter = computeBadges(updatedProgress);
+      badgesAfter.forEach((badge, i) => {
+        if (badge.unlocked && !badgesBefore[i].unlocked) {
+          setTimeout(() => {
             toast({
               title: `🏅 Conquista desbloqueada!`,
               description: `${badge.emoji} ${badge.title} — ${badge.description}`,
             });
-          }
-        });
-      }, 500);
+          }, 800);
+        }
+      });
 
       const starMsg = stars === 3 ? "Três estrelas! Perfeito!" : stars === 2 ? "Duas estrelas! Muito bem!" : "Uma estrela! Você completou o desafio!";
       speak(`Parabéns! Você chegou à estrela! ${starMsg}`);
@@ -300,6 +309,18 @@ const Challenge = () => {
                   ? "👍 Muito bem! Tente usar menos blocos para 3 estrelas."
                   : "✅ Desafio completo! Tente de novo com menos blocos para mais estrelas."}
               </p>
+
+              {/* Pilares BNCC praticados */}
+              <div className="space-y-1.5">
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Pensamento Computacional praticado</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {challenge.pillars.map((p) => (
+                    <span key={p} className={`text-xs font-bold px-3 py-1 rounded-full ${PILLAR_COLORS[p]}`}>
+                      {PILLAR_EMOJI[p]} {PILLAR_LABELS[p]}
+                    </span>
+                  ))}
+                </div>
+              </div>
 
               <div className="flex flex-col gap-2 pt-2">
                 {nextChallenge ? (

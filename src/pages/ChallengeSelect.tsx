@@ -105,6 +105,13 @@ const ChallengeSelect = () => {
 
       <main className="container mx-auto px-4 py-10 max-w-6xl space-y-10">
 
+        {/* Link professor */}
+        <div className="flex justify-end">
+          <Button variant="ghost" size="sm" onClick={() => navigate("/professor")} className="gap-2 text-muted-foreground">
+            👩‍🏫 Área do Professor
+          </Button>
+        </div>
+
         {/* Grid de desafios */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {challenges.map((challenge) => {
