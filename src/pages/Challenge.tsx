@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 import { challenges, BlockType } from "@/data/challenges";
 import { useProgress } from "@/hooks/useProgress";
 import { useSpeech } from "@/hooks/useSpeech";
+import { useProfile } from "@/hooks/useProfile";
+import { computeBadges } from "@/hooks/useBadges";
 
 const Challenge = () => {
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ const Challenge = () => {
   const { toast } = useToast();
   const { progress, completeChallenge } = useProgress();
   const { speak, caption } = useSpeech();
+  const { profile } = useProfile();
 
   const challengeId = Number(id) || 1;
   const challenge = challenges.find((c) => c.id === challengeId) ?? challenges[0];
@@ -90,15 +93,29 @@ const Challenge = () => {
 
   const handleVictory = useCallback(
     (blockCount: number) => {
+      const badgesBefore = computeBadges(progress);
       const stars = completeChallenge(challengeId, blockCount, challenge.solution.length);
       setEarnedStars(stars);
       setIsRunning(false);
       setShowVictory(true);
 
+      // Notify newly unlocked badges (compare after a tick so state updates propagate)
+      setTimeout(() => {
+        const badgesAfter = computeBadges(progress);
+        badgesAfter.forEach((badge, i) => {
+          if (badge.unlocked && !badgesBefore[i].unlocked) {
+            toast({
+              title: `🏅 Conquista desbloqueada!`,
+              description: `${badge.emoji} ${badge.title} — ${badge.description}`,
+            });
+          }
+        });
+      }, 500);
+
       const starMsg = stars === 3 ? "Três estrelas! Perfeito!" : stars === 2 ? "Duas estrelas! Muito bem!" : "Uma estrela! Você completou o desafio!";
       speak(`Parabéns! Você chegou à estrela! ${starMsg}`);
     },
-    [challengeId, challenge.solution.length, completeChallenge, speak]
+    [challengeId, challenge.solution.length, completeChallenge, progress, speak, toast]
   );
 
   const handleCollision = useCallback((errorIdx: number) => {
@@ -145,7 +162,13 @@ const Challenge = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              {profile && (
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xl">{profile.avatar}</span>
+                  <span className="text-xs font-bold text-muted-foreground hidden sm:block">{profile.name}</span>
+                </div>
+              )}
               {challengeProgress?.completed && (
                 <div className="flex gap-0.5">
                   {[1, 2, 3].map((s) => (
