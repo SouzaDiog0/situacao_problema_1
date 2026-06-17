@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Challenge from "./pages/Challenge";
 import ChallengeSelect from "./pages/ChallengeSelect";
+import Teacher from "./pages/Teacher";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/desafios" element={<ChallengeSelect />} />
           <Route path="/desafio/:id" element={<Challenge />} />
+          <Route path="/professor" element={<Teacher />} />
           {/* Legacy redirect */}
           <Route path="/desafio" element={<Navigate to="/desafio/1" replace />} />
           <Route path="*" element={<NotFound />} />

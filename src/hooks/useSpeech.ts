@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useSpeech = () => {
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
+  const [caption, setCaption] = useState("");
 
   useEffect(() => {
     if (!("speechSynthesis" in window)) return;
@@ -19,6 +20,7 @@ export const useSpeech = () => {
     if (!("speechSynthesis" in window)) return;
 
     window.speechSynthesis.cancel();
+    setCaption(text);
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "pt-BR";
@@ -31,16 +33,20 @@ export const useSpeech = () => {
     );
     if (ptVoice) utterance.voice = ptVoice;
 
+    utterance.onend = () => setCaption("");
+    utterance.onerror = () => setCaption("");
+
     window.speechSynthesis.speak(utterance);
   }, []);
 
   const stop = useCallback(() => {
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
+      setCaption("");
     }
   }, []);
 
   const isSupported = "speechSynthesis" in window;
 
-  return { speak, stop, isSupported };
+  return { speak, stop, isSupported, caption };
 };

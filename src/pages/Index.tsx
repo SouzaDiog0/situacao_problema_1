@@ -51,19 +51,20 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all"
                 onClick={() => navigate("/desafios")}
               >
                 Iniciar Agora
               </Button>
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 variant="outline"
-                className="text-lg px-8 py-6"
+                className="text-lg px-8 py-6 gap-2"
+                onClick={() => navigate("/professor")}
               >
-                Saiba Mais
+                👩‍🏫 Sou Professor
               </Button>
             </div>
           </div>

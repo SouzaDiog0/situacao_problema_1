@@ -5,6 +5,29 @@ export interface Position {
   y: number;
 }
 
+export type Pillar = "algoritmos" | "decomposicao" | "padroes" | "abstracao";
+
+export const PILLAR_LABELS: Record<Pillar, string> = {
+  algoritmos:   "Algoritmos",
+  decomposicao: "Decomposição",
+  padroes:      "Padrões",
+  abstracao:    "Abstração",
+};
+
+export const PILLAR_COLORS: Record<Pillar, string> = {
+  algoritmos:   "bg-blue-100 text-blue-800 border border-blue-200",
+  decomposicao: "bg-emerald-100 text-emerald-800 border border-emerald-200",
+  padroes:      "bg-orange-100 text-orange-800 border border-orange-200",
+  abstracao:    "bg-violet-100 text-violet-800 border border-violet-200",
+};
+
+export const PILLAR_EMOJI: Record<Pillar, string> = {
+  algoritmos:   "⚙️",
+  decomposicao: "🧩",
+  padroes:      "🔁",
+  abstracao:    "💡",
+};
+
 export interface Challenge {
   id: number;
   title: string;
@@ -19,6 +42,7 @@ export interface Challenge {
   maxBlocks?: number; // optional limit
   solution: BlockType[]; // one valid solution
   voiceInstruction: string;
+  pillars: Pillar[];
 }
 
 export type BlockType = "move" | "turn_right" | "turn_left" | "wait" | "loop2" | "loop3" | "loop4" | "if_obstacle";
@@ -48,6 +72,7 @@ export const challenges: Challenge[] = [
     availableBlocks: ["move"],
     solution: ["move", "move"],
     voiceInstruction: "Desafio 1: Primeiro Passo. Mova o foguete até a estrela usando o bloco Mover para Frente. O foguete está no lado esquerdo e a estrela está 2 casas para a direita.",
+    pillars: ["algoritmos"],
   },
   {
     id: 2,
@@ -62,6 +87,7 @@ export const challenges: Challenge[] = [
     availableBlocks: ["move"],
     solution: ["move", "move", "move", "move"],
     voiceInstruction: "Desafio 2: Jornada Completa. Mova o foguete 4 casas para a direita até chegar à estrela.",
+    pillars: ["algoritmos", "decomposicao"],
   },
   {
     id: 3,
@@ -76,6 +102,7 @@ export const challenges: Challenge[] = [
     availableBlocks: ["move", "turn_right"],
     solution: ["move", "move", "turn_right", "move", "move"],
     voiceInstruction: "Desafio 3: Primeira Curva. O foguete precisa girar para chegar à estrela. Use os blocos Mover para Frente e Girar à Direita.",
+    pillars: ["algoritmos", "decomposicao"],
   },
   {
     id: 4,
@@ -90,6 +117,7 @@ export const challenges: Challenge[] = [
     availableBlocks: ["move", "turn_right", "turn_left", "if_obstacle"],
     solution: ["turn_left", "move", "move", "turn_right", "move", "move", "move", "move", "turn_right", "move", "move"],
     voiceInstruction: "Desafio 4: Desvio Necessário. Há obstáculos no caminho! Use os blocos de movimento e giro para desviar dos asteroides. O bloco Se Obstáculo executa o próximo bloco apenas quando há um obstáculo à frente.",
+    pillars: ["algoritmos", "decomposicao"],
   },
   {
     id: 5,
@@ -107,6 +135,7 @@ export const challenges: Challenge[] = [
     availableBlocks: ["move", "turn_right", "turn_left"],
     solution: ["move", "move", "turn_right", "move", "move", "move", "turn_left", "move", "move", "turn_right", "move", "move", "move", "turn_left", "move", "move", "turn_right", "move"],
     voiceInstruction: "Desafio 5: Labirinto Simples. Navegue pelo labirinto usando os blocos de movimento e giro para chegar à estrela.",
+    pillars: ["algoritmos", "decomposicao", "padroes"],
   },
   {
     id: 6,
@@ -122,6 +151,7 @@ export const challenges: Challenge[] = [
     maxBlocks: 4,
     solution: ["loop4", "move"],
     voiceInstruction: "Desafio 6: Poder da Repetição. Use o bloco Repetir para mover o foguete várias vezes com poucos blocos. Você tem no máximo 4 blocos!",
+    pillars: ["padroes", "abstracao"],
   },
   {
     id: 7,
@@ -140,6 +170,7 @@ export const challenges: Challenge[] = [
     availableBlocks: ["move", "turn_right", "turn_left"],
     solution: ["move", "move", "move", "turn_right", "move", "move", "move", "move", "turn_right", "move", "move", "turn_left", "move", "move", "turn_left", "move", "move", "move", "turn_right", "move", "move", "move", "move", "turn_left"],
     voiceInstruction: "Desafio 7: Espiral. Navegue pelo caminho em espiral usando os blocos de movimento e giro.",
+    pillars: ["algoritmos", "padroes"],
   },
   {
     id: 8,
@@ -155,6 +186,7 @@ export const challenges: Challenge[] = [
     maxBlocks: 6,
     solution: ["loop3", "move", "turn_right", "loop3", "move"],
     voiceInstruction: "Desafio 8: Eficiência Máxima. Use repetições para resolver o desafio com no máximo 6 blocos!",
+    pillars: ["padroes", "abstracao"],
   },
   {
     id: 9,
@@ -174,6 +206,7 @@ export const challenges: Challenge[] = [
     availableBlocks: ["move", "turn_right", "turn_left", "loop2", "loop3", "if_obstacle"],
     solution: ["move", "turn_right", "move", "move", "move", "turn_left", "move", "move", "turn_left", "move", "turn_right", "move", "move", "turn_right", "move", "move", "move", "move", "turn_left", "move", "move", "turn_right", "move", "move"],
     voiceInstruction: "Desafio 9: Grande Labirinto. O maior labirinto da jornada! Planeje bem cada passo para chegar à estrela. Use Se Obstáculo para tomar decisões condicionais.",
+    pillars: ["algoritmos", "decomposicao", "padroes"],
   },
   {
     id: 10,
@@ -192,5 +225,6 @@ export const challenges: Challenge[] = [
     maxBlocks: 10,
     solution: ["turn_left", "loop2", "move", "turn_right", "loop3", "move", "turn_right", "loop2", "move", "turn_left", "loop3", "move"],
     voiceInstruction: "Desafio 10: Mestre dos Blocos! O desafio final! Use todo o seu conhecimento de blocos para completar este percurso épico.",
+    pillars: ["algoritmos", "decomposicao", "padroes", "abstracao"],
   },
 ];

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Volume2, VolumeX, ChevronLeft, ChevronRight, HelpCircle, X } from "lucide-react";
-import { Challenge } from "@/data/challenges";
+import { Volume2, VolumeX, ChevronLeft, ChevronRight, HelpCircle } from "lucide-react";
+import { Challenge, PILLAR_LABELS, PILLAR_COLORS, PILLAR_EMOJI } from "@/data/challenges";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ const InstructionsPanel = ({
   progress,
   isNextUnlocked,
 }: InstructionsPanelProps) => {
-  const { speak, stop, isSupported } = useSpeech();
+  const { speak, stop, isSupported, caption } = useSpeech();
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
 
@@ -63,6 +63,23 @@ const InstructionsPanel = ({
               <span className="text-xs">{isSpeaking ? "Parar" : "Ouvir"}</span>
             </Button>
           )}
+        </div>
+
+        {/* Legenda de voz — para deficientes auditivos */}
+        {caption && (
+          <div className="flex items-start gap-2 bg-gray-900 text-white rounded-xl p-3 text-sm leading-snug">
+            <span className="text-lg flex-shrink-0">💬</span>
+            <p>{caption}</p>
+          </div>
+        )}
+
+        {/* Pilares da BNCC */}
+        <div className="flex flex-wrap gap-1.5">
+          {challenge.pillars.map((p) => (
+            <span key={p} className={`text-xs font-bold px-2 py-0.5 rounded-full ${PILLAR_COLORS[p]}`}>
+              {PILLAR_EMOJI[p]} {PILLAR_LABELS[p]}
+            </span>
+          ))}
         </div>
 
         {/* Estrelas (se já completou) */}

@@ -16,7 +16,7 @@ const Challenge = () => {
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
   const { progress, completeChallenge } = useProgress();
-  const { speak } = useSpeech();
+  const { speak, caption } = useSpeech();
 
   const challengeId = Number(id) || 1;
   const challenge = challenges.find((c) => c.id === challengeId) ?? challenges[0];
@@ -229,6 +229,16 @@ const Challenge = () => {
           </div>
         </div>
       </div>
+
+      {/* Legenda de voz fixa — para deficientes auditivos */}
+      {caption && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 max-w-xl w-full px-4 pointer-events-none">
+          <div className="bg-gray-900/95 text-white rounded-2xl px-5 py-3 text-sm text-center shadow-2xl flex items-center gap-3 justify-center">
+            <span className="text-lg">💬</span>
+            <p className="leading-snug">{caption}</p>
+          </div>
+        </div>
+      )}
 
       {/* Victory Modal */}
       {showVictory && (
