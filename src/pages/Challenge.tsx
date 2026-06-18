@@ -70,7 +70,7 @@ const Challenge = () => {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLButtonElement) return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
 
       if (e.code === "Space" || e.code === "Enter") {
