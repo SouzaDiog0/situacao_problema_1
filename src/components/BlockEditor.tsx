@@ -93,7 +93,10 @@ const BlockEditor = ({
 
   const addBlock = (blockId: BlockType) => {
     if (maxBlocks && blocks.length >= maxBlocks) return;
-    setBlocks([...blocks, blockId]);
+    const next = [...blocks, blockId];
+    setBlocks(next);
+    // Auto-foca o bloco recém-adicionado para que as setas funcionem imediatamente
+    setTimeout(() => blockRefs.current[next.length - 1]?.focus(), 50);
   };
 
   const removeBlock = (index: number) => {
@@ -120,17 +123,25 @@ const BlockEditor = ({
       case "Delete":
       case "Backspace":
         e.preventDefault();
+        e.stopPropagation();
         removeBlock(index);
         break;
       case "ArrowLeft":
         e.preventDefault();
+        e.stopPropagation();
         if (e.ctrlKey || e.metaKey) moveBlock(index, index - 1);
         else blockRefs.current[index - 1]?.focus();
         break;
       case "ArrowRight":
         e.preventDefault();
+        e.stopPropagation();
         if (e.ctrlKey || e.metaKey) moveBlock(index, index + 1);
         else blockRefs.current[index + 1]?.focus();
+        break;
+      // Evita que Space/Enter disparem o "Executar" global quando um bloco está em foco
+      case " ":
+      case "Enter":
+        e.stopPropagation();
         break;
     }
   };
