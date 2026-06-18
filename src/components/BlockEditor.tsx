@@ -269,7 +269,7 @@ const BlockEditor = ({
                   disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100
                   cursor-pointer outline-none
                   ${focusedPaletteIdx === paletteIdx
-                    ? "border-white ring-4 ring-white ring-offset-2 scale-105 brightness-110"
+                    ? "border-transparent ring-4 ring-gray-900 ring-offset-2 scale-105 brightness-110"
                     : "border-transparent"
                   }`}
               >
@@ -351,7 +351,7 @@ const BlockEditor = ({
                       ${isDragging ? "opacity-30 scale-95" : ""}
                       ${isDropTarget ? "ring-4 ring-primary ring-offset-2 scale-105" : ""}
                       ${focusedBlockIdx === index && !isError && !isDropTarget
-                        ? "ring-4 ring-white ring-offset-2 scale-110 brightness-110"
+                        ? "ring-4 ring-gray-900 ring-offset-2 scale-110 brightness-110"
                         : ""
                       }
                       ${!isRunning ? "cursor-grab active:cursor-grabbing" : "cursor-default"}
