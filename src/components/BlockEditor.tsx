@@ -90,6 +90,22 @@ const BlockEditor = ({
   const [draggingIdx, setDraggingIdx] = useState<number | null>(null);
   const [dropTarget, setDropTarget] = useState<number | null>(null);
   const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const paletteRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const handlePaletteKeyDown = (e: React.KeyboardEvent, index: number) => {
+    switch (e.key) {
+      case "ArrowRight":
+      case "ArrowDown":
+        e.preventDefault();
+        paletteRefs.current[index + 1]?.focus();
+        break;
+      case "ArrowLeft":
+      case "ArrowUp":
+        e.preventDefault();
+        paletteRefs.current[index - 1]?.focus();
+        break;
+    }
+  };
 
   const addBlock = (blockId: BlockType) => {
     if (maxBlocks && blocks.length >= maxBlocks) return;
@@ -231,14 +247,16 @@ const BlockEditor = ({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {availableBlocks.map((blockId) => {
+          {availableBlocks.map((blockId, paletteIdx) => {
             const cfg = BLOCK_CONFIG[blockId];
             return (
               <button
                 key={blockId}
+                ref={(el) => { paletteRefs.current[paletteIdx] = el; }}
                 draggable
                 onDragStart={(e) => handlePaletteDragStart(e, blockId)}
                 onClick={() => !isRunning && addBlock(blockId)}
+                onKeyDown={(e) => handlePaletteKeyDown(e, paletteIdx)}
                 disabled={isRunning || atLimit}
                 aria-label={`Adicionar bloco ${BLOCK_LABELS[blockId]}`}
                 className={`flex flex-col items-center justify-center gap-2 py-4 px-3 rounded-2xl
