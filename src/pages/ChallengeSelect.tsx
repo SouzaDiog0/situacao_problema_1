@@ -11,7 +11,7 @@ import { ArrowLeft, Star, Lock, Trophy, RotateCcw } from "lucide-react";
 const ChallengeSelect = () => {
   const navigate = useNavigate();
   const { progress, totalCompleted, totalStars, resetProgress } = useProgress();
-  const { profile, saveProfile } = useProfile();
+  const { profile, saveProfile, clearProfile } = useProfile();
   const badges = computeBadges(progress);
   const unlockedBadges = badges.filter((b) => b.unlocked);
 
@@ -45,7 +45,12 @@ const ChallengeSelect = () => {
                 <span className="text-2xl">{profile.avatar}</span>
                 <div>
                   <p className="text-sm font-black leading-none">Comandante {profile.name}</p>
-                  <p className="text-xs text-muted-foreground">Missão Galáctica</p>
+                  <button
+                    onClick={clearProfile}
+                    className="text-xs text-muted-foreground hover:text-destructive transition-colors"
+                  >
+                    Trocar perfil
+                  </button>
                 </div>
               </div>
             )}

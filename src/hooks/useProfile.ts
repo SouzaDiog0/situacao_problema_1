@@ -27,5 +27,12 @@ export const useProfile = () => {
     } catch {}
   };
 
-  return { profile, saveProfile };
+  const clearProfile = () => {
+    setProfile(null);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {}
+  };
+
+  return { profile, saveProfile, clearProfile };
 };
