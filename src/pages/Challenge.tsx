@@ -164,6 +164,9 @@ const Challenge = () => {
                 <ArrowLeft className="w-4 h-4" />
                 Desafios
               </Button>
+              <span className="font-black text-base tracking-tight select-none hidden md:inline">
+                <span className="text-primary">Edu</span><span className="text-secondary">Blox</span>
+              </span>
               <div className="h-4 w-px bg-border" />
               <div>
                 <h1 className="text-sm font-bold leading-none">{challenge.title}</h1>

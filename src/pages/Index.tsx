@@ -17,7 +17,10 @@ const Index = () => {
     <div className="min-h-screen">
       {/* Accessibility Bar */}
       <div className="bg-card border-b border-border">
-        <div className="container mx-auto px-4 py-2 flex justify-end items-center gap-4">
+        <div className="container mx-auto px-4 py-2 flex justify-between items-center">
+          <span className="font-black text-xl tracking-tight select-none">
+            <span className="text-primary">Edu</span><span className="text-secondary">Blox</span>
+          </span>
           <Button
             variant="ghost"
             size="sm"
@@ -39,8 +42,12 @@ const Index = () => {
               <Sparkles className="w-4 h-4" />
               100% Gratuito e Inclusivo
             </div>
-            
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight animate-slide-up">
+
+            <div className="text-6xl md:text-8xl font-black tracking-tight animate-fade-in">
+              <span className="text-primary">Edu</span><span className="text-secondary">Blox</span>
+            </div>
+
+            <h1 className="text-2xl md:text-4xl font-bold leading-tight animate-slide-up">
               Aprenda lógica{" "}
               <span className="text-primary">brincando</span>
             </h1>
@@ -222,8 +229,11 @@ const Index = () => {
       {/* Footer */}
       <footer className="bg-card border-t border-border py-8">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>Plataforma Inclusiva de Pensamento Computacional - 2024</p>
-          <p className="text-sm mt-2">Democratizando o ensino de lógica para todos</p>
+          <p className="font-black text-lg">
+            <span className="text-primary">Edu</span><span className="text-secondary">Blox</span>
+          </p>
+          <p className="text-sm mt-1">Plataforma inclusiva de pensamento computacional · 2025</p>
+          <p className="text-xs mt-1 opacity-60">Democratizando o ensino de lógica para todos</p>
         </div>
       </footer>
     </div>

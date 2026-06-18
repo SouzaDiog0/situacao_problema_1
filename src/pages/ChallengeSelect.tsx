@@ -40,6 +40,9 @@ const ChallengeSelect = () => {
               <ArrowLeft className="w-4 h-4" />
               Início
             </Button>
+            <span className="font-black text-xl tracking-tight select-none hidden sm:inline">
+              <span className="text-primary">Edu</span><span className="text-secondary">Blox</span>
+            </span>
             {profile && (
               <div className="flex items-center gap-2">
                 <span className="text-2xl">{profile.avatar}</span>
