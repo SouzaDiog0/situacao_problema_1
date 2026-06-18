@@ -89,6 +89,8 @@ const BlockEditor = ({
   const dragOver = useRef<number | null>(null);
   const [draggingIdx, setDraggingIdx] = useState<number | null>(null);
   const [dropTarget, setDropTarget] = useState<number | null>(null);
+  const [focusedPaletteIdx, setFocusedPaletteIdx] = useState<number | null>(null);
+  const [focusedBlockIdx, setFocusedBlockIdx] = useState<number | null>(null);
   const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
   const paletteRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -257,14 +259,19 @@ const BlockEditor = ({
                 onDragStart={(e) => handlePaletteDragStart(e, blockId)}
                 onClick={() => !isRunning && addBlock(blockId)}
                 onKeyDown={(e) => handlePaletteKeyDown(e, paletteIdx)}
+                onFocus={() => setFocusedPaletteIdx(paletteIdx)}
+                onBlur={() => setFocusedPaletteIdx(null)}
                 disabled={isRunning || atLimit}
                 aria-label={`Adicionar bloco ${BLOCK_LABELS[blockId]}`}
                 className={`flex flex-col items-center justify-center gap-2 py-4 px-3 rounded-2xl
-                  border-2 border-transparent transition-all select-none
+                  border-2 transition-all select-none
                   ${cfg.palette}
                   disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100
-                  cursor-pointer
-                  focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white focus-visible:ring-offset-2`}
+                  cursor-pointer outline-none
+                  ${focusedPaletteIdx === paletteIdx
+                    ? "border-white ring-4 ring-white ring-offset-2 scale-105 brightness-110"
+                    : "border-transparent"
+                  }`}
               >
                 <div className="flex items-center justify-center h-10">
                   {cfg.paletteIcon}
@@ -334,15 +341,20 @@ const BlockEditor = ({
                     onDrop={(e) => handleProgramDrop(e, index)}
                     onDragEnd={handleDropEnd}
                     onKeyDown={(e) => handleProgramKeyDown(e, index)}
-                    className={`relative flex items-center gap-1.5 pl-2 pr-1 py-2 rounded-xl transition-all
+                    onFocus={() => setFocusedBlockIdx(index)}
+                    onBlur={() => setFocusedBlockIdx(null)}
+                    className={`relative flex items-center gap-1.5 pl-2 pr-1 py-2 rounded-xl transition-all outline-none
                       ${isError
                         ? "bg-red-500 text-white shadow-lg shadow-red-200 animate-[shake_0.4s_ease-in-out]"
                         : cfg.program
                       }
                       ${isDragging ? "opacity-30 scale-95" : ""}
                       ${isDropTarget ? "ring-4 ring-primary ring-offset-2 scale-105" : ""}
+                      ${focusedBlockIdx === index && !isError && !isDropTarget
+                        ? "ring-4 ring-white ring-offset-2 scale-110 brightness-110"
+                        : ""
+                      }
                       ${!isRunning ? "cursor-grab active:cursor-grabbing" : "cursor-default"}
-                      focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white focus-visible:ring-offset-2
                       select-none`}
                   >
                     {/* Número do bloco */}
